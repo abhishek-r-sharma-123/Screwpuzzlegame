@@ -1,1 +1,69 @@
-hshx
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Screw Puzzle</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Initialize Three.js scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Set up OrbitControls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
+
+        // Sample block
+        const blockGeometry = new THREE.BoxGeometry(2, 2, 2);
+        const blockMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 }); // Brown color
+        const block = new THREE.Mesh(blockGeometry, blockMaterial);
+        scene.add(block);
+
+        // Sample screw
+        const screwGeometry = new THREE.CylinderGeometry(0.2, 0.2, 1, 32);
+        const screwMaterial = new THREE.MeshLambertMaterial({ color: 0xFF0000 }); // Red color
+        const screw = new THREE.Mesh(screwGeometry, screwMaterial);
+        block.add(screw);
+        screw.position.set(1, 0, 0); // Place screw on block
+
+        // Camera position
+        camera.position.z = 5;
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resizing
+        window.addEventListener('resize', function() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    </script>
+</body>
+</html>
