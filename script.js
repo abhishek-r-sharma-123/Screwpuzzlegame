@@ -25,7 +25,7 @@ directionalLight.position.set(5, 10, 7);
 scene.add(directionalLight);
 
 // --- Game Objects (Simple Blocks) ---
-const blocks =;
+const blocks = [];
 const originalColors = {}; // To store original colors for reset or state tracking
 
 function createBlock(x, y, z, color, name) {
@@ -83,8 +83,8 @@ function onCanvasClick(event) {
         } else {
             console.log(`${clickedBlock.name} is already removed.`);
             // Optional: Revert color if clicked again (for demonstration)
-            // clickedBlock.material.color.set(originalColors);
-            // clickedBlock.userData.isRemoved = false;
+            clickedBlock.material.color.set(originalColors[clickedBlock.name]);
+            clickedBlock.userData.isRemoved = false;
         }
     }
 }
